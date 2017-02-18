@@ -1,0 +1,215 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /hello:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: hello_world
+    get:
+      description: Returns 'Hello' to the caller
+      # used as the method name of the controller
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dogs:
+    x-swagger-router-controller: dog
+    get:
+      description: List all dogs
+      operationId: getDogs
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Dogs"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dog:
+    x-swagger-router-controller: dog
+    post:
+      description: Add a dog to the fight
+      operationId: addDog
+      parameters:
+        - name: dog
+          in: body
+          description: dog information
+          required: true
+          schema:
+            $ref: "#/definitions/Dog"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dog/{name}:
+    x-swagger-router-controller: dog
+    get:
+      description: Returns dog details
+      operationId: getDog
+      parameters:
+        - name: name
+          in: path
+          description: The name of the dog to get
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Dog"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Remove a dog
+      operationId: removeDog
+      parameters:
+        - name: name
+          in: path
+          description: The name of the dog to remove
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+  /fight:
+    x-swagger-router-controller: fight
+    post:
+      description: Start a dog fight
+      operationId: start
+      parameters:
+        - name: dogs
+          in: body
+          description: Add 2 dogs to a fight
+          required: true
+          schema:
+            $ref: "#/definitions/DogFight"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  DogFight:
+    type: array
+    items:
+      type: string
+  Dogs:
+    type: array
+    items:
+      type: string
+  GeneralResponse:
+    type: object
+    properties:
+      success:
+        type: number
+        description: returns 1 if successful
+      description:
+        type: string
+        description: a short comment 
+    required:
+      - success
+      - description
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  Dog:
+    required:
+      - name
+      - weight
+    properties:
+      name:
+        type: string
+      gender:
+        type: string
+      weight:
+        type: integer
+        format: int32
+      fight_moves:
+        type: array
+        items:
+          type: object
+          properties:
+            verb:
+              type: string
+            noun:
+              type: string
+            value:
+              type: integer
+              format: int32
+      distractions:
+        type: array
+        items: 
+          type: object
+          properties:
+            distraction:
+              type: string
+            value:
+              type: integer
+              format: int32
+      actions:
+        type: array
+        items:
+          type: object
+          properties:
+            action:
+              type: string
+            value:
+              type: integer
+              format: int32
+      
+            
+            
+      
+      
