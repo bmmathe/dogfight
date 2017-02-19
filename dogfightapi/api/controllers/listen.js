@@ -1,24 +1,31 @@
 var fight = require('./fight.js');
-var dog = require('./dog.js');
+var redis = require('../data/redis.js');
 
 module.exports = {
-    listen: listen
+    listen: listen    
 };
 
 function listen(req, res) {
     var request = req.body;
     var commands = request.text.split(' ');
-    var description = '';
-    switch(commands[1]) {
-        case "fight":
-            var dogs = [commands[2], commands[3]];
-            fight.queueFight(dogs);
-            description = "Fight queued";
-            break;
-        default:
-            res.status(404).json({message: "Command not found"});
-            break;
-    }
+    var command = commands[1];
 
-    res.json({success: 1, description: description});
+    if(command == "commands") {
+        res.json({text: "fight {dog1 name} {dog2 name}\ngetdog {name}\ngetdogs"});
+    } else if(command == "fight") {
+        var dogs = [commands[2], commands[3]];
+        fight.queueFight(dogs);
+        res.json({text: "Preparing to fight..."});
+    } else if(command == "getdogs") {
+        redis.getAllDogs(function(redis_error, dogs) {
+            res.json({text: JSON.stringify(dogs)});
+        });
+    } else if(command == "getdog") {
+        var dogName = commands[2];
+        redis.getDog(dogName, function(err, dog) {
+            res.json({text: JSON.stringify(dog)});
+        });
+    } else {
+        res.json({text: "Command not found: \"/dogfight commands\" to list available commands."});
+    }            
 }

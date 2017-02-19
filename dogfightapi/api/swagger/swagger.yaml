@@ -219,22 +219,27 @@ paths:
           schema:
             $ref: "#/definitions/ErrorResponse"
   /listen:
-    x-swagger-router-controller: listen
+    x-swagger-router-controller: listen    
     post:
+      consumes: 
+        - application/x-www-form-urlencoded
       description: Listens for commands
       operationId: listen
       parameters:
-        - name: info
-          in: body
-          description: The command to listen for
-          required: true
-          schema:
-            $ref: "#/definitions/ListenRequest"
+        - $ref: "#/parameters/token"
+        - $ref: "#/parameters/team_id"
+        - $ref: "#/parameters/team_domain"
+        - $ref: "#/parameters/channel_id"
+        - $ref: "#/parameters/channel_name"
+        - $ref: "#/parameters/user_id"
+        - $ref: "#/parameters/user_name"
+        - $ref: "#/parameters/text"
+        - $ref: "#/parameters/trigger_word"
       responses:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/GeneralResponse"
+            $ref: "#/definitions/SlackResponse"
         default:
           description: Error
           schema:
@@ -242,8 +247,61 @@ paths:
 
   /swagger:
     x-swagger-pipe: swagger_raw
+parameters:
+  token:
+    name: token
+    in: formData
+    description: token
+    required: true
+    type: string
+  team_id:
+    name: team_id
+    in: formData
+    description: team_id
+    type: string
+  team_domain:
+    name: team_domain
+    in: formData
+    description: team_domain
+    type: string
+  channel_id:
+    name: channel_id
+    in: formData
+    description: channel_id
+    type: string
+  channel_name:
+    name: channel_name
+    in: formData
+    description: channel_name
+    type: string
+  user_id:
+    name: user_id
+    in: formData
+    description: user_id
+    type: string
+  user_name:
+    name: user_name
+    in: formData
+    description: user_name
+    type: string
+  text:
+    name: text
+    in: formData
+    description: text
+    type: string
+  trigger_word:
+    name: trigger_word
+    in: formData
+    description: trigger_word
+    type: string  
 # complex objects have schema definitions
 definitions:
+  SlackResponse:
+    type: object
+    properties:      
+      text:
+        type: string
+        description: Message to send to Slack
   DogActions:
     type: array
     items:
@@ -276,35 +334,6 @@ definitions:
         value:
           type: integer
           format: int32
-  ListenRequest:
-    type: object
-    properties:
-      token:
-        type: string
-        description: Slack token
-      team_id:
-        type: string
-        description: Slack team ID
-      team_domain:
-        type: string
-      channel_id:
-        type: string
-        description: Slack channel ID
-      channel_name:
-        type: string
-        description: Slack channel name
-      user_id:
-        type: string
-        description: User that sent the message
-      user_name:
-        type: string
-        description: Slack user name that sent the request
-      text:
-        type: string
-        description: The command that was sent
-      trigger_word:
-        type: string
-        description: The trigger word        
   DogFight:
     type: array
     items:

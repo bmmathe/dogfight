@@ -17,7 +17,7 @@
     "should": "^7.1.0",
     "supertest": "^1.0.0"
   },
-  "scripts": {
+  "scripts": {    
     "config" : "node swapConfig.js",
     "start": "node app.js",
     "test": "swagger project test"
