@@ -1,6 +1,8 @@
 var redis = require('redis');
-var client = redis.createClient(6379, '40.70.219.21');
+var config = require('../../config.js');
+var client = redis.createClient(6379, config.redis);
 var util = require('util');
+var outbound = require('../utils/outbound.js');
 
 exports.saveDog = function(dog) {
     client.set('dog:'+dog.name, JSON.stringify(dog));
@@ -75,40 +77,57 @@ exports.listen = function() {
 
 function startFight(dog1, dog2, arenaId) {
     console.log(util.format('%s fighting %s in arena %s', dog1.name, dog2.name, arenaId));
-    dog1.hp = dog1.weight*2;
-    dog2.hp = dog2.weight*2;
+    dog1.hp = dog1.weight;
+    dog2.hp = dog2.weight;
     var dogs = [dog1, dog2];
     
     console.log('%s hp is %s', dogs[0].name, dogs[0].hp);
     console.log('%s hp is %s', dogs[1].name, dogs[1].hp);
 
     var turn = 1;
-    while(dogs[0].hp > 0 && dogs[1].hp > 0) {        
-        var actionType = Math.floor((Math.random() * 3) + 1);
-        var action = {};
-        switch(actionType) {
-            case 1:     
-                action = dogs[turn].fight_moves[Math.floor((Math.random() * dogs[turn].fight_moves.length))];                
-                dogs[(turn+1)%2].hp += action.value;               
-                console.log(util.format('%s %s %s\'s %s : %s hp is %s', dogs[turn].name, action.verb, dogs[(turn+1)%2].name, action.noun, dogs[(turn+1)%2].name, dogs[(turn+1)%2].hp));
-                break;
-            case 2:
-                action = dogs[turn].distractions[Math.floor((Math.random() * dogs[turn].distractions.length))];                       
-                dogs[turn].hp += action.value;
-                console.log(util.format('%s %s : %s hp is %s', dogs[turn].name, action.distraction, dogs[turn].name, dogs[turn].hp));
-                break;
-            case 3: 
-                action = dogs[turn].actions[Math.floor((Math.random() * dogs[turn].actions.length))];                
-                dogs[turn].hp += action.value;
-                console.log(util.format('%s %s : %s hp is %s', dogs[turn].name, action.action, dogs[turn].name, dogs[turn].hp));
-                break;
-        }
-        turn = (turn+1)%2;        
-    }
+    takeTurn(dogs, turn);    
+}
 
-    if(dogs[0].hp <= 0) {
-        console.log(util.format('%s won', dogs[1].name));
+function takeTurn(dogs, turn) {
+    var message = '';        
+    var actionType = Math.floor((Math.random() * 100) + 1);
+    var action = {};
+    if(actionType >= 50) {     
+        action = dogs[turn].fight_moves[Math.floor((Math.random() * dogs[turn].fight_moves.length))];                
+        dogs[(turn+1)%2].hp += action.value;
+        message = util.format('%s %s %s\'s %s', dogs[turn].name, action.verb, dogs[(turn+1)%2].name, action.noun);      
+        console.log(message);
+        //console.log(util.format('%s hp is %s', dogs[(turn+1)%2].name, dogs[(turn+1)%2].hp));
+    } else if(actionType >= 25) {        
+        action = dogs[turn].distractions[Math.floor((Math.random() * dogs[turn].distractions.length))];                       
+        dogs[turn].hp += action.value;
+        message = util.format('%s %s', dogs[turn].name, action.distraction);
+        console.log(message);
+        //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
     } else {
-        console.log(util.format('%s won', dogs[0].name));
-    }
+        action = dogs[turn].actions[Math.floor((Math.random() * dogs[turn].actions.length))];                
+        dogs[turn].hp += action.value;
+        message = util.format('%s %s', dogs[turn].name, action.action);
+        console.log(message);
+        //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
+    }    
+
+    outbound.send(message);
+
+    setTimeout(function() {
+        if(dogs[0].hp > 0 && dogs[1].hp > 0) {
+            takeTurn(dogs, (turn+1)%2);
+        } else {
+            var winner = '';
+            if(dogs[0].hp <= 0) {
+                winner = dogs[1].name;                
+            } else {
+                winner = dogs[0].name;                
+            }
+            var winnerMsg = util.format('%s won!', winner);
+            console.log(winnerMsg);
+            outbound.send(winnerMsg);
+        }
+    }, 1000);
+    
 }
