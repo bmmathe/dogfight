@@ -9,3 +9,6 @@ DEBUG=swagger-tools*
 
 ## Starting the project
 swagger project start
+
+## Edit the Swagger YAML Spec
+swagger project edit

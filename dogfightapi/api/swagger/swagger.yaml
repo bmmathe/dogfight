@@ -1,14 +1,12 @@
 swagger: "2.0"
 info:
   version: "0.0.1"
-  title: Hello World App
+  title: Dog Fight App
 # during dev, should point to your local machine
 host: localhost:10010
 # basePath prefixes all resource paths 
 basePath: /
-# 
-schemes:
-  # tip: remove http to make production-grade
+schemes:  
   - http
   - https
 # format of bodies a client can send (Content-Type)
@@ -22,21 +20,15 @@ paths:
     # binds a127 app logic to a route
     x-swagger-router-controller: hello_world
     get:
-      description: Returns 'Hello' to the caller
+      description: Health check
       # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
+      operationId: hello      
       responses:
         "200":
           description: Success
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
+            type: string
         # responses may fall through to errors
         default:
           description: Error
@@ -79,15 +71,15 @@ paths:
             $ref: "#/definitions/ErrorResponse"
   /dog/{name}:
     x-swagger-router-controller: dog
+    parameters:
+      - name: name
+        in: path
+        description: Name of dog
+        required: true
+        type: string
     get:
       description: Returns dog details
       operationId: getDog
-      parameters:
-        - name: name
-          in: path
-          description: The name of the dog to get
-          required: true
-          type: string
       responses:
         "200":
           description: Success
@@ -100,17 +92,107 @@ paths:
     delete:
       description: Remove a dog
       operationId: removeDog
-      parameters:
-        - name: name
-          in: path
-          description: The name of the dog to remove
-          required: true
-          type: string
       responses:
         "200":
           description: Success
           schema:
             $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dog/{name}/fight_moves:
+    x-swagger-router-controller: dog
+    parameters:
+      - name: name
+        in: path
+        description: The name of the dog to remove
+        required: true
+        type: string
+    get:
+      description: Gets dogs's fight moves
+      operationId: getFightMoves
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DogFightMoves"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Adds a fight move for the dog
+      operationId: addFightMove
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dog/{name}/distractions:
+    x-swagger-router-controller: dog
+    parameters:
+      - name: name
+        in: path
+        description: The name of the dog to remove
+        required: true
+        type: string
+    get:
+      description: Gets dogs's distractions
+      operationId: getDistractions
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DogDistractions"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Adds a distraction for the dog
+      operationId: addDistraction
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /dog/{name}/actions:
+    x-swagger-router-controller: dog
+    parameters:
+      - name: name
+        in: path
+        description: The name of the dog to remove
+        required: true
+        type: string
+    get:
+      description: Gets dogs's actions
+      operationId: getActions
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/DogActions"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    post:
+      description: Adds an action for the dog
+      operationId: addAction
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"      
         default:
           description: Error
           schema:
@@ -162,6 +244,38 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
+  DogActions:
+    type: array
+    items:
+      type: object
+      properties:
+        action:
+          type: string
+        value:
+          type: integer
+          format: int32
+  DogDistractions:
+    type: array
+    items: 
+      type: object
+      properties:
+        distraction:
+          type: string
+        value:
+          type: integer
+          format: int32
+  DogFightMoves:
+    type: array
+    items:
+      type: object
+      properties:
+        verb:
+          type: string
+        noun:
+          type: string
+        value:
+          type: integer
+          format: int32
   ListenRequest:
     type: object
     properties:
@@ -211,12 +325,6 @@ definitions:
     required:
       - success
       - description
-  HelloWorldResponse:
-    required:
-      - message
-    properties:
-      message:
-        type: string
   ErrorResponse:
     required:
       - message
@@ -236,37 +344,11 @@ definitions:
         type: integer
         format: int32
       fight_moves:
-        type: array
-        items:
-          type: object
-          properties:
-            verb:
-              type: string
-            noun:
-              type: string
-            value:
-              type: integer
-              format: int32
+        $ref: "#/definitions/DogFightMoves"
       distractions:
-        type: array
-        items: 
-          type: object
-          properties:
-            distraction:
-              type: string
-            value:
-              type: integer
-              format: int32
+        $ref: "#/definitions/DogDistractions"
       actions:
-        type: array
-        items:
-          type: object
-          properties:
-            action:
-              type: string
-            value:
-              type: integer
-              format: int32
+        $ref: "#/definitions/DogActions"
       
             
             

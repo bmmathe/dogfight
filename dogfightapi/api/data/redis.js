@@ -8,12 +8,12 @@ exports.saveDog = function(dog) {
     client.set('dog:'+dog.name, JSON.stringify(dog));
 }
 
-exports.getDog = function(dogName,callback) {
-    client.get('dog:'+dogName, function(err, reply){
+exports.getDog = function(name,callback) {
+    client.get('dog:'+name, function(err, data){
         if(err) {
             console.log("Error in getDog: " +JSON.stringify(err));
         }
-        callback(err, JSON.parse(reply));
+        callback(err, JSON.parse(data));
     });
 }
 
@@ -21,8 +21,8 @@ exports.putMove = function() {
     client.rpush(id, message);
 }
 
-exports.deleteDog = function(dogName, callback) {
-    client.del('dog:'+dogName, function(err, reply){
+exports.deleteDog = function(name, callback) {
+    client.del('dog:'+name, function(err, reply){
         if(err) {
             console.log(JSON.stringify(err));
         }
@@ -130,4 +130,46 @@ function takeTurn(dogs, turn) {
         }
     }, 1000);
     
+}
+
+exports.getFightMoves = function(name, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        callback(redis_error, dog.fight_moves);
+    });
+}
+
+exports.addFightMove = function(name, fightMove, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {
+        dog.fight_moves.push(fightMove);
+        module.exports.saveDog(dog); 
+        callback(redis_error, dog);        
+    });
+}
+
+exports.getDistractions = function(name, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        callback(redis_error, dog.distractions);
+    });
+}
+
+exports.addDistraction = function(name, distraction, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {
+        dog.distractions.push(distraction);
+        module.exports.saveDog(dog); 
+        callback(redis_error, dog);        
+    });
+}
+
+exports.getActions = function(name, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        callback(redis_error, dog.actions);
+    });
+}
+
+exports.addAction = function(name, action, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {
+        dog.actions.push(action);
+        module.exports.saveDog(dog); 
+        callback(redis_error, dog);        
+    });
 }
