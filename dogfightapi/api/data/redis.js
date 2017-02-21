@@ -95,19 +95,19 @@ function takeTurn(dogs, turn) {
     if(actionType >= 50) {     
         action = dogs[turn].attacks[Math.floor((Math.random() * dogs[turn].attacks.length))];                
         dogs[(turn+1)%2].hp += action.value;
-        message = util.format('%s %s (%s)',action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), actions.value, dogs[(turn+1)%2].hp);
+        message = util.format('%s %s (%s)',action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dogs[(turn+1)%2].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[(turn+1)%2].name, dogs[(turn+1)%2].hp));
     } else if(actionType >= 25) {        
         action = dogs[turn].distractions[Math.floor((Math.random() * dogs[turn].distractions.length))];                       
         dogs[turn].hp += action.value;
-        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dog[turn].hp);
+        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dogs[turn].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
     } else {
         action = dogs[turn].actions[Math.floor((Math.random() * dogs[turn].actions.length))];                
         dogs[turn].hp += action.value;
-        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dog[turn].hp);
+        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dogs[turn].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
     }    
@@ -140,6 +140,9 @@ exports.getAttacks = function(name, callback) {
 
 exports.addAttack = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
+        if(!dog.attacks) {
+            dog.attacks = [];
+        }
         dog.attacks.push({message: message, value: value});
         module.exports.saveDog(dog); 
         callback(redis_error, dog);        

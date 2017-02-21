@@ -18,18 +18,37 @@ function listen(req, res) {
         res.json({text: "Preparing to fight..."});
     } else if(command == "getdogs") {
         redis.getAllDogs(function(redis_error, dogs) {
-            res.json({text: JSON.stringify(dogs)});
+            var dogMessage = '';
+            for(var i = 0; i < dogs.length; i++) {
+                dogMessage += dogs[i];
+                if(i !== dogs.length-1) {
+                    dogMessage += '\n';
+                }
+            }
+            res.json({text: dogMessage});
         });
     } else if(command == "getdog") {
         var dogName = commands[2];
         redis.getDog(dogName, function(err, dog) {
-            res.json({text: JSON.stringify(dog)});
+            res.json({text: '```'+JSON.stringify(dog)+'```'});
         });        
     } else if(command == "add") {
         var type = commands[2];
-        if(type == "attack") {            
-            var attack = request.text.split('"');
-            redis.addAttack(commands[3], attack[1], parseInt(attack[2]),function(err, dog){
+        var actions = request.split('"');
+        var name = commands[3];
+        var message = actions[1];
+        var value = parseInt(actions[2]);
+
+        if(type == "attack") {                        
+            redis.addAttack(name, message, value,function(err, dog){
+                res.json({text: "Attack added."});
+            });
+        } else if(type == "distraction") {
+            redis.addDistraction(name, message, value,function(err, dog){
+                res.json({text: "Attack added."});
+            });
+        } else {
+            redis.addAction(name, message, value,function(err, dog){
                 res.json({text: "Attack added."});
             });
         }

@@ -124,6 +124,13 @@ paths:
     post:
       description: Adds an attack for the dog
       operationId: addAttack
+      parameters:
+        - name: attack
+          in: body
+          description: Attack message and value
+          required: true
+          schema:
+            $ref: "#/definitions/GeneralAction"
       responses:
         "200":
           description: Success
@@ -156,6 +163,13 @@ paths:
     post:
       description: Adds a distraction for the dog
       operationId: addDistraction
+      parameters:
+        - name: distraction
+          in: body
+          description: Distraction message and value
+          required: true
+          schema:
+            $ref: "#/definitions/GeneralAction"
       responses:
         "200":
           description: Success
@@ -188,6 +202,13 @@ paths:
     post:
       description: Adds an action for the dog
       operationId: addAction
+      parameters:
+        - name: action
+          in: body
+          description: Action message and value
+          required: true
+          schema:
+            $ref: "#/definitions/GeneralAction"
       responses:
         "200":
           description: Success
@@ -302,36 +323,29 @@ definitions:
       text:
         type: string
         description: Message to send to Slack
+  GeneralAction:
+    type: object
+    properties:
+      message:        
+        type: string
+      value:        
+        type: integer
+        format: int32
+    required:
+      - message
+      - value
   Actions:
     type: array
     items:
-      type: object
-      properties:
-        message:
-          type: string
-        value:
-          type: integer
-          format: int32
+      $ref: "#/definitions/GeneralAction"      
   Distractions:
     type: array
     items: 
-      type: object
-      properties:
-        message:
-          type: string
-        value:
-          type: integer
-          format: int32
+      $ref: "#/definitions/GeneralAction"    
   Attacks:
     type: array
     items:
-      type: object
-      properties:
-        message:
-          type: string        
-        value:
-          type: integer
-          format: int32
+      $ref: "#/definitions/GeneralAction"    
   DogFight:
     type: array
     items:

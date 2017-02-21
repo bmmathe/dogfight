@@ -56,8 +56,9 @@ function getAttacks(req, res) {
     });
 }
 
-function addAttack(req, res) {
-    var name = req.swagger.params.name.value;
+function addAttack(req, res) {    
+    var name = req.swagger.params.name.value;    
+    //console.log(util.format('%s %s %s', name, req.body.message, req.body.value));
     redis.addAttack(name, req.body.message, req.body.value, function() {
         res.json({success: 1, description: "Attack added."});
     });
