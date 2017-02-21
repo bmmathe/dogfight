@@ -58,7 +58,7 @@ function getAttacks(req, res) {
 
 function addAttack(req, res) {
     var name = req.swagger.params.name.value;
-    redis.addAttack(name, req.body, function() {
+    redis.addAttack(name, req.body.message, req.body.value, function() {
         res.json({success: 1, description: "Attack added."});
     });
 }
@@ -72,7 +72,7 @@ function getDistractions(req, res) {
 
 function addDistraction(req, res) {
     var name = req.swagger.params.name.value;
-    redis.addDistraction(name, req.body, function() {
+    redis.addDistraction(name, req.body.message, req.body.value, function() {
         res.json({success: 1, description: "Distraction added."});
     });
 }
@@ -86,7 +86,7 @@ function getActions(req, res) {
 
 function addAction(req, res) {
     var name = req.swagger.params.name.value;
-    redis.addAction(name, req.body, function() {
+    redis.addAction(name, req.body.message, req.body.value, function() {
         res.json({success: 1, description: "Action added."});
     });
 }

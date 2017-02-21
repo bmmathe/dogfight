@@ -138,9 +138,9 @@ exports.getAttacks = function(name, callback) {
     });
 }
 
-exports.addAttack = function(name, Attack, callback) {
+exports.addAttack = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
-        dog.attacks.push(Attack);
+        dog.attacks.push({message: message, value: value});
         module.exports.saveDog(dog); 
         callback(redis_error, dog);        
     });
@@ -152,9 +152,9 @@ exports.getDistractions = function(name, callback) {
     });
 }
 
-exports.addDistraction = function(name, distraction, callback) {
+exports.addDistraction = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
-        dog.distractions.push(distraction);
+        dog.distractions.push({message: message, value: value});
         module.exports.saveDog(dog); 
         callback(redis_error, dog);        
     });
@@ -166,9 +166,9 @@ exports.getActions = function(name, callback) {
     });
 }
 
-exports.addAction = function(name, action, callback) {
+exports.addAction = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
-        dog.actions.push(action);
+        dog.actions.push({message: message, value: value});
         module.exports.saveDog(dog); 
         callback(redis_error, dog);        
     });

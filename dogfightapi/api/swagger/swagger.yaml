@@ -307,7 +307,7 @@ definitions:
     items:
       type: object
       properties:
-        action:
+        message:
           type: string
         value:
           type: integer
@@ -317,7 +317,7 @@ definitions:
     items: 
       type: object
       properties:
-        distraction:
+        message:
           type: string
         value:
           type: integer
@@ -327,10 +327,8 @@ definitions:
     items:
       type: object
       properties:
-        verb:
-          type: string
-        noun:
-          type: string
+        message:
+          type: string        
         value:
           type: integer
           format: int32

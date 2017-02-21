@@ -28,8 +28,8 @@ function listen(req, res) {
     } else if(command == "add") {
         var type = commands[2];
         if(type == "attack") {            
-            var attacks = request.text.split('"');
-            redis.addAttack(commands[3], {verb: attacks[1], noun: attacks[3], value: parseInt(attacks[4])},function(err, dog){
+            var attack = request.text.split('"');
+            redis.addAttack(commands[3], attack[1], parseInt(attack[2]),function(err, dog){
                 res.json({text: "Attack added."});
             });
         }
