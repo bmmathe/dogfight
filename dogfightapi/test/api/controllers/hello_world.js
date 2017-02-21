@@ -18,28 +18,11 @@ describe('controllers', function() {
           .end(function(err, res) {
             should.not.exist(err);
 
-            res.body.should.eql('Hello, stranger!');
+            res.body.should.eql('OK');
 
             done();
           });
-      });
-
-      it('should accept a name parameter', function(done) {
-
-        request(server)
-          .get('/hello')
-          .query({ name: 'Scott'})
-          .set('Accept', 'application/json')
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end(function(err, res) {
-            should.not.exist(err);
-
-            res.body.should.eql('Hello, Scott!');
-
-            done();
-          });
-      });
+      });    
 
     });
 

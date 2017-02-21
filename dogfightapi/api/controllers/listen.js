@@ -11,7 +11,7 @@ function listen(req, res) {
     var command = commands[1];
 
     if(command == "commands") {
-        res.json({text: "fight {dog1 name} {dog2 name}\ngetdog {name}\ngetdogs"});
+        res.json({text: "fight {dog1 name} {dog2 name}\ngetdog {name}\ngetdogs\nadd attack {dog name} {\"verb\" \"noun\" {negative int}}"});
     } else if(command == "fight") {
         var dogs = [commands[2], commands[3]];
         fight.queueFight(dogs);
@@ -24,7 +24,15 @@ function listen(req, res) {
         var dogName = commands[2];
         redis.getDog(dogName, function(err, dog) {
             res.json({text: JSON.stringify(dog)});
-        });
+        });        
+    } else if(command == "add") {
+        var type = commands[2];
+        if(type == "attack") {            
+            var attacks = request.text.split('"');
+            redis.addFightMove(commands[3], {verb: attacks[1], noun: attacks[3], value: parseInt(attacks[4])},function(err, dog){
+                res.json({text: "Attack added."});
+            });
+        }
     } else {
         res.json({text: "Command not found: \"/dogfight commands\" to list available commands."});
     }            

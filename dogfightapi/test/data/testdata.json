@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Lola",
+        "gender" : "female",
+        "weight" : 65,
+        "fight_moves" : [
+            { "verb" : "bites", "noun" : "ears", "value" : -20 },
+            { "verb" : "bites", "noun" : "nose", "value" : -10 },
+            { "verb" : "bites", "noun" : "leg", "value" : -30 }
+        ],
+        "distractions" : [
+            {"distraction" : "chases squirrel", "value" : -20 },
+            {"distraction" : "barks at mailman", "value" : -10 },
+            {"distraction" : "lays down to take a nap", "value" : -30 }
+        ],
+        "actions" : [
+            {"action" : "growls", "value" : 15 },
+            {"action" : "snarls", "value" : 10 },
+            {"action" : "raises hackles", "value" : 5 }
+        ]
+    }
+]
