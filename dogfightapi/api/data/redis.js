@@ -93,21 +93,21 @@ function takeTurn(dogs, turn) {
     var actionType = Math.floor((Math.random() * 100) + 1);
     var action = {};
     if(actionType >= 50) {     
-        action = dogs[turn].fight_moves[Math.floor((Math.random() * dogs[turn].fight_moves.length))];                
+        action = dogs[turn].attacks[Math.floor((Math.random() * dogs[turn].attacks.length))];                
         dogs[(turn+1)%2].hp += action.value;
-        message = util.format('%s %s %s\'s %s', dogs[turn].name, action.verb, dogs[(turn+1)%2].name, action.noun);      
+        message = util.format('%s %s (%s)',action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), actions.value, dogs[(turn+1)%2].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[(turn+1)%2].name, dogs[(turn+1)%2].hp));
     } else if(actionType >= 25) {        
         action = dogs[turn].distractions[Math.floor((Math.random() * dogs[turn].distractions.length))];                       
         dogs[turn].hp += action.value;
-        message = util.format('%s %s', dogs[turn].name, action.distraction);
+        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dog[turn].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
     } else {
         action = dogs[turn].actions[Math.floor((Math.random() * dogs[turn].actions.length))];                
         dogs[turn].hp += action.value;
-        message = util.format('%s %s', dogs[turn].name, action.action);
+        message = util.format('%s %s (%s)', action.message.replace("{0}", dogs[turn].name).replace("{1}", dogs[(turn+1)%2].name), action.value, dog[turn].hp);
         console.log(message);
         //console.log(util.format('%s hp is %s', dogs[turn].name, dogs[turn].hp));
     }    
@@ -132,15 +132,15 @@ function takeTurn(dogs, turn) {
     
 }
 
-exports.getFightMoves = function(name, callback) {
+exports.getAttacks = function(name, callback) {
     module.exports.getDog(name, function(redis_error, dog) {        
-        callback(redis_error, dog.fight_moves);
+        callback(redis_error, dog.attacks);
     });
 }
 
-exports.addFightMove = function(name, fightMove, callback) {
+exports.addAttack = function(name, Attack, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
-        dog.fight_moves.push(fightMove);
+        dog.attacks.push(Attack);
         module.exports.saveDog(dog); 
         callback(redis_error, dog);        
     });

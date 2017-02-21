@@ -1,0 +1,320 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Dog Fighting",
+		"_postman_id": "da59e549-82e3-b859-21df-c516f51206ae",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Lola",
+			"request": {
+				"url": "http://{{url}}:3000/dog",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Lola\",\r\n   \"gender\" : \"female\",\r\n   \"weight\" : 65,\r\n   \"fight_moves\" : [\r\n      { \"verb\" : \"bites\", \"noun\" : \"ears\", \"value\" : -20 },\r\n      { \"verb\" : \"bites\", \"noun\" : \"nose\", \"value\" : -10 },\r\n      { \"verb\" : \"bites\", \"noun\" : \"leg\", \"value\" : -30 }\r\n   ],\r\n   \"distractions\" : [\r\n      {\"distraction\" : \"chases squirrel\", \"value\" : -20 },\r\n      {\"distraction\" : \"barks at mailman\", \"value\" : -10 },\r\n      {\"distraction\" : \"lays down to take a nap\", \"value\" : -30 }\r\n   ],\r\n   \"actions\" : [\r\n      {\"action\" : \"growls\", \"value\" : 15 },\r\n      {\"action\" : \"snarls\", \"value\" : 10 },\r\n      {\"action\" : \"raises hackles\", \"value\" : 5 }\r\n   ]\r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add Duke",
+			"request": {
+				"url": "http://127.0.0.1:10010/dog",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"name\": \"Duke\",\r\n   \"gender\" : \"male\",\r\n   \"weight\" : 60,\r\n   \"fight_moves\" : [\r\n      { \"verb\" : \"bites\", \"noun\" : \"ear\", \"value\" : -20 },\r\n      { \"verb\" : \"bites\", \"noun\" : \"nose\", \"value\" : -10 },\r\n      { \"verb\" : \"bites\", \"noun\" : \"leg\", \"value\" : -30 }\r\n   ],\r\n   \"distractions\" : [\r\n      {\"distraction\" : \"sees a moth\", \"value\" : -20 },\r\n      {\"distraction\" : \"barks at mailman\", \"value\" : -10 }\r\n   ],\r\n   \"actions\" : [\r\n      {\"action\" : \"growls\", \"value\" : 15 },\r\n      {\"action\" : \"snarls\", \"value\" : 10 },\r\n      {\"action\" : \"raises hackles\", \"value\" : 5 }\r\n   ]\r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Dogs",
+			"request": {
+				"url": "http://{{url}}:3000/dogs",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Lola",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Lola",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Duke",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Duke",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Lola's Attacks",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Lola/fight_moves",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Duke's Attacks",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Duke/fight_moves",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Start Fight",
+			"request": {
+				"url": "http://{{url}}:3000/fight",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"Lola\", \"Duke\"]"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Listen (Add Attack)",
+			"request": {
+				"url": "http://{{url}}:3000/listen",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "team_id",
+							"value": "T0001",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "team_domain",
+							"value": "example",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "channel_id",
+							"value": "C2147483705",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "channel_name",
+							"value": "test",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "timestamp",
+							"value": "1355517523.000005",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user_id",
+							"value": "U2147483697",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user_name",
+							"value": "Steve",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "text",
+							"value": "dogfight add attack Lola \"lunges at\" \"throat\" -20",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "trigger_word",
+							"value": "dogfight",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Listen (Start Fight)",
+			"request": {
+				"url": "http://{{url}}:3000/listen",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "token",
+							"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "team_id",
+							"value": "T0001",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "team_domain",
+							"value": "example",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "channel_id",
+							"value": "C2147483705",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "channel_name",
+							"value": "test",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "timestamp",
+							"value": "1355517523.000005",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user_id",
+							"value": "U2147483697",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "user_name",
+							"value": "Steve",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "text",
+							"value": "dogfight fight Lola Duke",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "trigger_word",
+							"value": "googlebot",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Lola",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Lola",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Duke",
+			"request": {
+				"url": "http://{{url}}:3000/dog/Duke",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

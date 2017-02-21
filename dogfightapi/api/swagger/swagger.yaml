@@ -101,7 +101,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /dog/{name}/fight_moves:
+  /dog/{name}/attacks:
     x-swagger-router-controller: dog
     parameters:
       - name: name
@@ -111,19 +111,19 @@ paths:
         type: string
     get:
       description: Gets dogs's fight moves
-      operationId: getFightMoves
+      operationId: getAttacks
       responses:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/DogFightMoves"      
+            $ref: "#/definitions/Attacks"      
         default:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
     post:
-      description: Adds a fight move for the dog
-      operationId: addFightMove
+      description: Adds an attack for the dog
+      operationId: addAttack
       responses:
         "200":
           description: Success
@@ -148,7 +148,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/DogDistractions"      
+            $ref: "#/definitions/Distractions"      
         default:
           description: Error
           schema:
@@ -180,7 +180,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/DogActions"      
+            $ref: "#/definitions/Actions"      
         default:
           description: Error
           schema:
@@ -302,7 +302,7 @@ definitions:
       text:
         type: string
         description: Message to send to Slack
-  DogActions:
+  Actions:
     type: array
     items:
       type: object
@@ -312,7 +312,7 @@ definitions:
         value:
           type: integer
           format: int32
-  DogDistractions:
+  Distractions:
     type: array
     items: 
       type: object
@@ -322,7 +322,7 @@ definitions:
         value:
           type: integer
           format: int32
-  DogFightMoves:
+  Attacks:
     type: array
     items:
       type: object
@@ -372,12 +372,12 @@ definitions:
       weight:
         type: integer
         format: int32
-      fight_moves:
-        $ref: "#/definitions/DogFightMoves"
+      attacks:
+        $ref: "#/definitions/Attacks"
       distractions:
-        $ref: "#/definitions/DogDistractions"
+        $ref: "#/definitions/Distractions"
       actions:
-        $ref: "#/definitions/DogActions"
+        $ref: "#/definitions/Actions"
       
             
             

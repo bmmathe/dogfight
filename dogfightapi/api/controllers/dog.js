@@ -6,8 +6,8 @@ module.exports = {
     getDog: getDog,
     removeDog: removeDog,
     getDogs: getDogs,
-    getFightMoves: getFightMoves,
-    addFightMove: addFightMove,
+    getAttacks: getAttacks,
+    addAttack: addAttack,
     getDistractions: getDistractions,
     addDistraction: addDistraction,
     getActions: getActions,
@@ -49,17 +49,17 @@ function getDogs(req, res) {
     });
 }
 
-function getFightMoves(req, res) {
+function getAttacks(req, res) {
     var name = req.swagger.params.name.value;
-    redis.getFightMoves(name, function(redis_error, fightMoves) {
-        res.json(fightMoves);
+    redis.getAttacks(name, function(redis_error, Attacks) {
+        res.json(Attacks);
     });
 }
 
-function addFightMove(req, res) {
+function addAttack(req, res) {
     var name = req.swagger.params.name.value;
-    redis.addFightMove(name, req.body, function() {
-        res.json({success: 1, description: "Fight move added."});
+    redis.addAttack(name, req.body, function() {
+        res.json({success: 1, description: "Attack added."});
     });
 }
 
