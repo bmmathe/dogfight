@@ -40,7 +40,7 @@ function listen(req, res) {
         var message = actions[1];
         var value = parseInt(actions[2]);
 
-        if(comamnd == "add") {
+        if(command == "add") {
             if(type == "attack") {                        
                 redis.addAttack(name, message, value,function(err, dog){
                     res.json({text: "Attack added."});
