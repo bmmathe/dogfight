@@ -120,7 +120,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/ErrorResponse"          
     post:
       description: Adds an attack for the dog
       operationId: addAttack
@@ -136,6 +136,25 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/GeneralResponse"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Remove attack from dog
+      operationId: removeAttack
+      parameters:
+        - name: message
+          in: body
+          description: Attack to remove
+          required: true
+          schema:
+            $ref: "#/definitions/Message"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
         default:
           description: Error
           schema:
@@ -179,6 +198,25 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Remove distraction from dog
+      operationId: removeDistraction
+      parameters:
+        - name: message
+          in: body
+          description: Distraction to remove
+          required: true
+          schema:
+            $ref: "#/definitions/Message"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /dog/{name}/actions:
     x-swagger-router-controller: dog
     parameters:
@@ -214,6 +252,25 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/GeneralResponse"      
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    delete:
+      description: Remove action from dog
+      operationId: removeAction
+      parameters:
+        - name: message
+          in: body
+          description: Action to remove
+          required: true
+          schema:
+            $ref: "#/definitions/Message"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GeneralResponse"
         default:
           description: Error
           schema:
@@ -314,9 +371,14 @@ parameters:
     name: trigger_word
     in: formData
     description: trigger_word
-    type: string  
+    type: string
 # complex objects have schema definitions
 definitions:
+  Message:
+    type: object
+    properties:
+      message:
+        type: string
   SlackResponse:
     type: object
     properties:      

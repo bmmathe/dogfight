@@ -1,0 +1,1109 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Dog Fighting",
+		"_postman_id": "da59e549-82e3-b859-21df-c516f51206ae",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API",
+			"description": "",
+			"item": [
+				{
+					"name": "Add Lola",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"Lola\",\r\n   \"gender\" : \"female\",\r\n   \"weight\" : 65,\r\n   \"attacks\" : [\r\n      { \"message\" : \"{0} bites {1}'s ears\", \"value\" : -20 },\r\n      { \"message\" : \"{0} bites {1}'s nose\", \"value\" : -10 },\r\n      { \"message\" : \"{0} bites {1}'s leg\", \"value\" : -30 }\r\n   ],\r\n   \"distractions\" : [\r\n      {\"message\" : \"{0} is distracted by a squirrel\", \"value\" : -20 },\r\n      {\"message\" : \"{0} barks at a car\", \"value\" : -10 },\r\n      {\"message\" : \"{0} lays down to take a nap\", \"value\" : -30 }\r\n   ],\r\n   \"actions\" : [\r\n      {\"message\" : \"{0} growls at {1}\", \"value\" : 15 },\r\n      {\"message\" : \"{0} snarls at {1}\", \"value\" : 10 },\r\n      {\"message\" : \"{0} raises hackles\", \"value\" : 5 }\r\n   ]\r\n}\r\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Duke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"Duke\",\r\n   \"gender\" : \"male\",\r\n   \"weight\" : 60,\r\n   \"attacks\" : [\r\n      { \"message\" : \"{0} bites {1}'s ears\", \"value\" : -20 },\r\n      { \"message\" : \"{0} bites {1}'s nose\", \"value\" : -10 },\r\n      { \"message\" : \"{0} bites {1}'s leg\", \"value\" : -30 }\r\n   ],\r\n   \"distractions\" : [\r\n      {\"message\" : \"{0} is distracted by a moth\", \"value\" : -20 },\r\n      {\"message\" : \"{0} is distracted by Trent\", \"value\" : -10 }\r\n   ],\r\n   \"actions\" : [\r\n      {\"message\" : \"{0} growls at {1}\", \"value\" : 15 }\r\n   ]\r\n}\r\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Dogs",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Lola is in list\"] = jsonData.indexOf(\"Lola\") >= 0;",
+									"tests[\"Duke is in list\"] = jsonData.indexOf(\"Duke\") >= 0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dogs",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lola",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"name is returned\"] = jsonData.name === \"Lola\"",
+									"tests[\"gender is returned\"] = jsonData.gender === \"female\";",
+									"tests[\"weight is returned\"] = jsonData.weight === 65;",
+									"tests[\"Lola has at least 1 attack\"] = jsonData.attacks.length > 0;",
+									"tests[\"Lola has at least 1 distraction\"] = jsonData.distractions.length > 0;",
+									"tests[\"Lola has at least 1 action\"] = jsonData.actions.length > 0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Duke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"name is returned\"] = jsonData.name === \"Duke\"",
+									"tests[\"gender is returned\"] = jsonData.gender === \"male\";",
+									"tests[\"weight is returned\"] = jsonData.weight === 60;",
+									"tests[\"Duke has at least 1 attack\"] = jsonData.attacks.length > 0;",
+									"tests[\"Duke has at least 1 distraction\"] = jsonData.distractions.length > 0;",
+									"tests[\"Duke has at least 1 action\"] = jsonData.actions.length > 0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Spot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 404\"] = responseCode.code === 404;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"message is 'Spot not found'\"] = jsonData.message === \"Spot not found\""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Spot",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lola's Attacks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Lola has more than 1 attack\"] = jsonData.length > 0;",
+									"",
+									"var schema = {",
+									" \"type\" : \"array\",",
+									" \"items\" : {",
+									"    \"type\" : \"object\",",
+									"    \"properties\" : {",
+									"        \"message\" : {",
+									"            \"type\" : \"string\"",
+									"        },",
+									"        \"value\" : {",
+									"            \"type\" : \"number\"",
+									"        }",
+									"    },",
+									"    \"required\" : [\"message\", \"value\"]",
+									" }",
+									"};",
+									"",
+									"tests[\"Valid response\"] = tv4.validate(jsonData, schema);",
+									"console.log(\"Validation failed: \", tv4.error);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/attacks",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Duke's Attacks",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Duke has more than 1 attack\"] = jsonData.length > 0;",
+									"",
+									"var schema = {",
+									" \"type\" : \"array\",",
+									" \"items\" : {",
+									"    \"type\" : \"object\",",
+									"    \"properties\" : {",
+									"        \"message\" : {",
+									"            \"type\" : \"string\"",
+									"        },",
+									"        \"value\" : {",
+									"            \"type\" : \"number\"",
+									"        }",
+									"    },",
+									"    \"required\" : [\"message\", \"value\"]",
+									" }",
+									"};",
+									"",
+									"tests[\"Valid response\"] = tv4.validate(jsonData, schema);",
+									"console.log(\"Validation failed: \", tv4.error);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke/attacks",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Lola Attack",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/attacks",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"message\": \"{0} bites {1}'s leg\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Duke's Distractions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Duke has more than 1 distraction\"] = jsonData.length > 0;",
+									"",
+									"var schema = {",
+									" \"type\" : \"array\",",
+									" \"items\" : {",
+									"    \"type\" : \"object\",",
+									"    \"properties\" : {",
+									"        \"message\" : {",
+									"            \"type\" : \"string\"",
+									"        },",
+									"        \"value\" : {",
+									"            \"type\" : \"number\"",
+									"        }",
+									"    },",
+									"    \"required\" : [\"message\", \"value\"]",
+									" }",
+									"};",
+									"",
+									"tests[\"Valid response\"] = tv4.validate(jsonData, schema);",
+									"console.log(\"Validation failed: \", tv4.error);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke/distractions",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Duke Distraction",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke/distractions",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"{0} is distracted by a moth\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lola's Actions",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Lola has more than 1 action\"] = jsonData.length > 0;",
+									"",
+									"var schema = {",
+									" \"type\" : \"array\",",
+									" \"items\" : {",
+									"    \"type\" : \"object\",",
+									"    \"properties\" : {",
+									"        \"message\" : {",
+									"            \"type\" : \"string\"",
+									"        },",
+									"        \"value\" : {",
+									"            \"type\" : \"number\"",
+									"        }",
+									"    },",
+									"    \"required\" : [\"message\", \"value\"]",
+									" }",
+									"};",
+									"",
+									"tests[\"Valid response\"] = tv4.validate(jsonData, schema);",
+									"console.log(\"Validation failed: \", tv4.error);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/actions",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Lola Action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/actions",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"{0} snarls at {1}\"\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Add Attack Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Response body has message\"] = jsonData.hasOwnProperty(\"message\");",
+									"tests[\"message contains 'Request validation failed'\"] = jsonData.message.has(\"Request validation failed\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/attacks",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Attack for Lola",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola/attacks",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"{0} bites {1}'s paw.\",\n\t\"value\": -10\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add Attack for Duke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"success is 1\"] = jsonData.success === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke/attacks",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"message\": \"{0} bites {1}'s paw.\",\n\t\"value\": -10\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Start Invalid Fight",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 400\"] = responseCode.code === 400;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"message contains 'Must have only 2 dogs in a fight'\"] = jsonData.message.has(\"Must have only 2 dogs in a fight\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/fight",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"Lola\", \"Duke\", \"Bailey\"]"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Lola",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Lola",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Duke",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}:3000/dog/Duke",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Listen",
+			"description": "",
+			"item": [
+				{
+					"name": "Listen (Add Dog)",
+					"request": {
+						"url": "http://{{url}}:3000/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight add dog Bailey female 8",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "googlebot",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Add Attack)",
+					"request": {
+						"url": "http://{{url}}:3000/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight add attack Lola \"{0} lunges at {1}'s throat\" -20",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "dogfight",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Get Dogs)",
+					"request": {
+						"url": "http://{{url}}:3000/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight getdogs",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "googlebot",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Get Dog)",
+					"request": {
+						"url": "http://{{url}}:3000/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight getdog Lola",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "googlebot",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Start Fight)",
+					"request": {
+						"url": "http://{{url}}:3000/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight fight Lola Duke",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "googlebot",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Start Fight",
+			"request": {
+				"url": "http://{{url}}:3000/fight",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\"Lola\", \"Duke\"]"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

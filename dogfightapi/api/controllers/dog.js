@@ -8,15 +8,19 @@ module.exports = {
     getDogs: getDogs,
     getAttacks: getAttacks,
     addAttack: addAttack,
+    removeAttack: removeAttack,
     getDistractions: getDistractions,
     addDistraction: addDistraction,
+    removeDistraction: removeDistraction,
     getActions: getActions,
-    addAction: addAction
+    addAction: addAction,
+    removeAction: removeAction
 };
 
 function addDog(req, res) {
-    redis.saveDog(req.body);    
-    res.json({success: 1, description: "Added dog to fight"});
+    redis.saveDog(req.body, function(redis_error, dog){
+        res.json({success: 1, description: "Added dog to fight"});
+    });    
 }
 
 function getDog(req, res) {
@@ -33,7 +37,7 @@ function getDog(req, res) {
 
 function removeDog(req, res) {
     var name = req.swagger.params.name.value;
-    redis.deleteDog(name, function(redis_error, success) {
+    redis.removeDog(name, function(redis_error, success) {
         if(success < 1) {
             res.status(404).send({message: util.format('%s not found', name)});
         } else {
@@ -51,17 +55,24 @@ function getDogs(req, res) {
 
 function getAttacks(req, res) {
     var name = req.swagger.params.name.value;
-    redis.getAttacks(name, function(redis_error, Attacks) {
-        res.json(Attacks);
+    redis.getAttacks(name, function(redis_error, attacks) {
+        res.json(attacks);
     });
 }
 
 function addAttack(req, res) {    
     var name = req.swagger.params.name.value;    
     //console.log(util.format('%s %s %s', name, req.body.message, req.body.value));
-    redis.addAttack(name, req.body.message, req.body.value, function() {
+    redis.addAttack(name, req.body.message, req.body.value, function(redis_error, data) {
         res.json({success: 1, description: "Attack added."});
     });
+}
+
+function removeAttack(req, res) {
+    var name = req.swagger.params.name.value;    
+    redis.removeAttack(name, req.body.message, function(redis_error, data) {
+        res.json({success: 1, description: "Attack removed."});
+    })
 }
 
 function getDistractions(req, res) {
@@ -78,6 +89,13 @@ function addDistraction(req, res) {
     });
 }
 
+function removeDistraction(req, res) {
+    var name = req.swagger.params.name.value;    
+    redis.removeDistraction(name, req.body.message, function(redis_error, data) {
+        res.json({success: 1, description: "Distraction removed."});
+    })
+}
+
 function getActions(req, res) {
     var name = req.swagger.params.name.value;
     redis.getActions(name, function(redis_error, actions) {
@@ -90,4 +108,11 @@ function addAction(req, res) {
     redis.addAction(name, req.body.message, req.body.value, function() {
         res.json({success: 1, description: "Action added."});
     });
+}
+
+function removeAction(req, res) {
+    var name = req.swagger.params.name.value;    
+    redis.removeAction(name, req.body.message, function(redis_error, data) {
+        res.json({success: 1, description: "Action removed."});
+    })
 }

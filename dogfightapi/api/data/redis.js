@@ -4,8 +4,11 @@ var client = redis.createClient(6379, config.redis);
 var util = require('util');
 var outbound = require('../utils/outbound.js');
 
-exports.saveDog = function(dog) {
-    client.set('dog:'+dog.name, JSON.stringify(dog));
+exports.saveDog = function(dog, callback) {
+    client.set('dog:'+dog.name, JSON.stringify(dog), function(err, dog) {
+        console.log(dog);
+        callback(err, dog);
+    });
 }
 
 exports.getDog = function(name,callback) {
@@ -21,7 +24,7 @@ exports.putMove = function() {
     client.rpush(id, message);
 }
 
-exports.deleteDog = function(name, callback) {
+exports.removeDog = function(name, callback) {
     client.del('dog:'+name, function(err, reply){
         if(err) {
             console.log(JSON.stringify(err));
@@ -144,8 +147,25 @@ exports.addAttack = function(name, message, value, callback) {
             dog.attacks = [];
         }
         dog.attacks.push({message: message, value: value});
-        module.exports.saveDog(dog); 
-        callback(redis_error, dog);        
+        module.exports.saveDog(dog, function(saveDogError, data){
+            callback(redis_error, dog);                    
+        }); 
+    });
+}
+
+exports.removeAttack = function(name, message, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        var attacks = dog.attacks.filter(function(e) {
+            return e.message !== message;
+        });
+        if(redis_error) {
+            callback(redis_eror, dog);
+        } else {
+            dog.attacks = attacks;
+            module.exports.saveDog(dog, function(saveError, dog) {
+                callback(saveError, dog);
+            });
+        }
     });
 }
 
@@ -157,9 +177,29 @@ exports.getDistractions = function(name, callback) {
 
 exports.addDistraction = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
+        if(!dog.distractions) {
+            dog.distractions = [];
+        }
         dog.distractions.push({message: message, value: value});
-        module.exports.saveDog(dog); 
-        callback(redis_error, dog);        
+        module.exports.saveDog(dog, function(saveDogError, data){
+            callback(redis_error, dog);                    
+        }); 
+    });
+}
+
+exports.removeDistraction = function(name, message, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        var distractions = dog.distractions.filter(function(e) {
+            return e.message !== message;
+        });
+        if(redis_error) {
+            callback(redis_eror, dog);
+        } else {
+            dog.distractions = distractions;
+            module.exports.saveDog(dog, function(saveError, dog) {
+                callback(saveError, dog);
+            });
+        }
     });
 }
 
@@ -171,8 +211,28 @@ exports.getActions = function(name, callback) {
 
 exports.addAction = function(name, message, value, callback) {
     module.exports.getDog(name, function(redis_error, dog) {
+        if(!dog.actions) {
+            dog.actions = [];
+        }
         dog.actions.push({message: message, value: value});
-        module.exports.saveDog(dog); 
-        callback(redis_error, dog);        
+        module.exports.saveDog(dog, function(saveDogError, data){
+            callback(redis_error, dog);                    
+        }); 
+    });
+}
+
+exports.removeAction = function(name, message, callback) {
+    module.exports.getDog(name, function(redis_error, dog) {        
+        var actions = dog.actions.filter(function(e) {
+            return e.message !== message;
+        });
+        if(redis_error) {
+            callback(redis_eror, dog);
+        } else {
+            dog.actions = actions;
+            module.exports.saveDog(dog, function(saveError, dog) {
+                callback(saveError, dog);
+            });
+        }
     });
 }

@@ -14,12 +14,13 @@
     "swagger-express-mw": "^0.1.0"
   },
   "devDependencies": {
+    "newman": "^3.4.3",
     "should": "^7.1.0",
     "supertest": "^1.0.0"
   },
-  "scripts": {    
-    "config" : "node swapConfig.js",
+  "scripts": {
+    "config": "node swapConfig.js",
     "start": "node app.js",
-    "test": "swagger project test"
+    "test": "newman run ./test/postman/DogFighting.postman_collection.json --folder API -e ./test/postman/Local.postman_environment.json --color -r cli,junit"
   }
 }
