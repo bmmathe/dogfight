@@ -47,13 +47,13 @@ function listen(req, res) {
                 });
             } else if(type == "distraction") {
                 redis.addDistraction(name, message, value,function(err, dog){
-                    res.json({text: "Attack added."});
+                    res.json({text: "Distraction added."});
                 });
             } else if(type == "action"){
                 redis.addAction(name, message, value,function(err, dog){
-                    res.json({text: "Attack added."});
+                    res.json({text: "Action added."});
                 });
-            } else if(type == "dog") {
+            } else if(type == "dog") {                
                 redis.saveDog({name: commands[3], gender: commands[4], weight: parseInt(commands[5])}, function(redis_error, dog){
                     res.json({text: util.format('%s added to the fight.', commands[3])});
                 });
@@ -64,15 +64,15 @@ function listen(req, res) {
         } else { // remove
             if(type == "attack") {                        
                 redis.addAttack(name, message, value,function(err, dog){
-                    res.json({text: "Attack added."});
+                    res.json({text: "Attack removed."});
                 });
             } else if(type == "distraction") {
                 redis.addDistraction(name, message, value,function(err, dog){
-                    res.json({text: "Attack added."});
+                    res.json({text: "Distraction removed."});
                 });
             } else if(type == "action"){
                 redis.addAction(name, message, value,function(err, dog){
-                    res.json({text: "Attack added."});
+                    res.json({text: "Action removed."});
                 });
             } else if(type == "dog") {
                 redis.removeDog(commands[3], function(redis_error, dog){
