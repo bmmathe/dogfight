@@ -21,6 +21,6 @@
   "scripts": {
     "config": "node swapConfig.js",
     "start": "node app.js",
-    "test": "newman run ./test/postman/DogFighting.postman_collection.json --folder API -e ./test/postman/Local.postman_environment.json --color -r cli,junit"
+    "test": "newman run ./test/postman/DogFighting.postman_collection.json --folder API -e ./test/postman/DF_Production.postman_environment.json --color -r cli,junit"
   }
 }

@@ -63,7 +63,7 @@ exports.listen = function() {
         clientBlocking.blpop(id, 0, function(err, data) {
             if(err) {
                 console.log("Error: " +err);
-                return;
+                //return;
             }
             var fight = JSON.parse(data[1]);
             module.exports.getDog(fight.dogs[0], function(err1, dog1) {
