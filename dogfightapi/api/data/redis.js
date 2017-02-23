@@ -14,8 +14,8 @@ client.on('error', function (err) {
 
 client.on('ready', function () {
     console.log('Redis ready');
+    module.exports.listen();
 });
-
 
 exports.saveDog = function(dog, callback) {
     client.set('dog:'+dog.name, JSON.stringify(dog), function(err, dog) {
@@ -50,9 +50,6 @@ exports.getAllDogs = function(callback) {
     var dogs = [];
     var cursor = '0';
     client.scan(cursor, 'MATCH', 'dog:*', 'COUNT', '5', function(err, reply){
-        console.log(reply[0]);
-        console.log(reply[1]);
-
         for(var i = 0; i < reply[1].length; i++) {
             dogs.push(reply[1][i].replace('dog:',''));
         }
