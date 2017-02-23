@@ -1,22 +1,33 @@
 [
     {
-        "name": "Lola",
+        "name": "Bailey",
         "gender" : "female",
-        "weight" : 65,
-        "fight_moves" : [
-            { "verb" : "bites", "noun" : "ears", "value" : -20 },
-            { "verb" : "bites", "noun" : "nose", "value" : -10 },
-            { "verb" : "bites", "noun" : "leg", "value" : -30 }
-        ],
-        "distractions" : [
-            {"distraction" : "chases squirrel", "value" : -20 },
-            {"distraction" : "barks at mailman", "value" : -10 },
-            {"distraction" : "lays down to take a nap", "value" : -30 }
-        ],
-        "actions" : [
-            {"action" : "growls", "value" : 15 },
-            {"action" : "snarls", "value" : 10 },
-            {"action" : "raises hackles", "value" : 5 }
-        ]
+        "weight" : 10,
+        "attacks" : 3,
+        "attack_1" : { "message" : "{0} bites {1}'s ear", "value" : -20 },
+        "attack_2" : { "message" : "{0} bites {1}'s lip", "value" : -10 },
+        "attack_3" : { "message" : "{0} charges {1}", "value" : -30 },          
+        "distractions" : 3,
+        "distraction_1" : {"message" : "{0} chases a squirrel", "value" : -20 },
+        "distraction_2" : {"message" : "{0} barks at mailman", "value" : -10 },
+        "distraction_3" : {"message" : "{0} lays down to take a nap", "value" : -30 },        
+        "actions" : 2,
+        "action_1" : {"message": "{0} growls at {1}", "value" : 15 },
+        "action_2" : {"message": "{0} barks at {1}", "value" : 15 }                
+    },
+    {
+        "name": "Spot",
+        "gender" : "male",
+        "weight" : 45,
+        "attacks" : 3,
+        "attack_1" : { "message" : "{0} bites {1}'s throat", "value" : -20 },
+        "attack_2" : { "message" : "{0} bites {1}'s tail", "value" : -10 },
+        "attack_3" : { "message" : "{0} jumps on {1}", "value" : -30 },          
+        "distractions" : 2,
+        "distraction_1" : {"message" : "{0} sees human with food", "value" : -20 },
+        "distraction_2" : {"message" : "{0} hears noise", "value" : -10 },
+        "actions" : 2,
+        "action_1" : {"message": "{0} growls at {1}", "value" : 15 },
+        "action_2" : {"message": "{0} barks at {1}", "value" : 15 }                
     }
 ]

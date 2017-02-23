@@ -20,7 +20,8 @@
   },
   "scripts": {
     "config": "node swapConfig.js",
-    "start" : "DEBUG=swagger-tools* swagger project start",
-    "test": "newman run ./test/postman/DogFighting.postman_collection.json --folder API -e ./test/postman/DF_Production.postman_environment.json --color -r cli,junit"
+    "start" : "node app.js",
+    "test": "newman run ./test/postman/DogFighting.postman_collection.json --folder API -e ./test/postman/Local.postman_environment.json --color -r cli,junit",
+    "test_workflow": "newman run ./test/postman/DogFighting.postman_collection.json --folder Listen -e ./test/postman/Local.postman_environment.json -d ./test/data/testdata.json -n 2 --color -r cli,junit"
   }
 }

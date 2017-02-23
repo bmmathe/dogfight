@@ -680,6 +680,39 @@
 			"item": [
 				{
 					"name": "Listen (Add Dog)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = (responseCode.code === 200);\r",
+									"\r",
+									"if (responseCode.code === 200) {\r",
+									"    // Set an ID for this execution\r",
+									"    postman.setEnvironmentVariable(\"run_id\", _.random(0,100000));\r",
+									"    // As defined in the workflow, set the next request to be executed to Create Day Log\r",
+									"    postman.setNextRequest(\"Listen (Add Attack)\");\r",
+									"}\r",
+									"else {\r",
+									"    // Stop execution\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"attackIteration\", \"0\");",
+									"postman.setEnvironmentVariable(\"distractionIteration\", \"0\");",
+									"postman.setEnvironmentVariable(\"actionIteration\", \"0\");"
+								]
+							}
+						}
+					],
 					"request": {
 						"url": "http://{{url}}/listen",
 						"method": "POST",
@@ -743,7 +776,7 @@
 								},
 								{
 									"key": "text",
-									"value": "dogfight add dog Bailey female 8",
+									"value": "dogfight add dog {{name}} {{gender}} {{weight}}",
 									"type": "text",
 									"enabled": true
 								},
@@ -761,6 +794,48 @@
 				},
 				{
 					"name": "Listen (Add Attack)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = (responseCode.code === 200);\r",
+									"\r",
+									"if (responseCode.code === 200) {\r",
+									"    // As defined in the workflow, set the next request to be executed to Create Day Log\r",
+									"    var attackIteration = _.parseInt(postman.getEnvironmentVariable(\"attackIteration\"));\r",
+									"    if(attackIteration < _.parseInt(data[\"attacks\"])) { \r",
+									"        postman.setNextRequest(\"Listen (Add Attack)\");\r",
+									"    } else {\r",
+									"        postman.setNextRequest(\"Listen (Add Distraction)\");\r",
+									"    }\r",
+									"}\r",
+									"else {\r",
+									"    // Stop execution\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var attackIteration = environment.attackIteration ? _.parseInt(environment.attackIteration) + 1 : 1;\r",
+									"console.log(attackIteration);\r",
+									"console.log(data['attack_'+attackIteration].message);\r",
+									"console.log(data['attack_'+attackIteration].value);\r",
+									"postman.setEnvironmentVariable(\"attack\", data['attack_'+attackIteration].message);\r",
+									"postman.setEnvironmentVariable(\"value\", _.parseInt(data['attack_'+attackIteration].value));\r",
+									"// This value will be use in the URL\r",
+									"postman.setEnvironmentVariable(\"attackIteration\", attackIteration);\r",
+									""
+								]
+							}
+						}
+					],
 					"request": {
 						"url": "http://{{url}}/listen",
 						"method": "POST",
@@ -824,7 +899,251 @@
 								},
 								{
 									"key": "text",
-									"value": "dogfight add attack Lola \"{0} lunges at {1}'s throat\" -20",
+									"value": "dogfight add attack {{name}} \"{{attack}}\" {{value}}",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "dogfight",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Add Distraction)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = (responseCode.code === 200);\r",
+									"\r",
+									"if (responseCode.code === 200) {\r",
+									"    // As defined in the workflow, set the next request to be executed to Create Day Log\r",
+									"    var distractionIteration = _.parseInt(postman.getEnvironmentVariable(\"distractionIteration\"));\r",
+									"    if(distractionIteration < _.parseInt(data[\"distractions\"])) { \r",
+									"        postman.setNextRequest(\"Listen (Add Distraction)\");\r",
+									"    } else {\r",
+									"        postman.setNextRequest(\"Listen (Add Action)\");\r",
+									"    }\r",
+									"}\r",
+									"else {\r",
+									"    // Stop execution\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var distractionIteration = environment.distractionIteration ? _.parseInt(environment.distractionIteration) + 1 : 1;\r",
+									"console.log(data['distraction_'+distractionIteration].message);\r",
+									"console.log(data['distraction_'+distractionIteration].value);\r",
+									"postman.setEnvironmentVariable(\"distraction\", data['distraction_'+distractionIteration].message);\r",
+									"postman.setEnvironmentVariable(\"value\", _.parseInt(data['distraction_'+distractionIteration].value));\r",
+									"// This value will be use in the URL\r",
+									"postman.setEnvironmentVariable(\"distractionIteration\", distractionIteration);\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight add distraction {{name}} \"{{distraction}}\" {{value}}",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "trigger_word",
+									"value": "dogfight",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Listen (Add Action)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = (responseCode.code === 200);\r",
+									"\r",
+									"if (responseCode.code === 200) {\r",
+									"    // As defined in the workflow, set the next request to be executed to Create Day Log\r",
+									"    var actionIteration = _.parseInt(postman.getEnvironmentVariable(\"actionIteration\"));\r",
+									"    if(actionIteration < _.parseInt(data[\"actions\"])) { \r",
+									"        postman.setNextRequest(\"Listen (Add Action)\");\r",
+									"    } else {\r",
+									"        postman.setNextRequest(\"Listen (Get Dogs)\");\r",
+									"    }\r",
+									"}\r",
+									"else {\r",
+									"    // Stop execution\r",
+									"    postman.setNextRequest(null);\r",
+									"}"
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var actionIteration = environment.actionIteration ? _.parseInt(environment.actionIteration) + 1 : 1;\r",
+									"console.log(data['action_'+actionIteration].message);\r",
+									"console.log(data['action_'+actionIteration].value);\r",
+									"postman.setEnvironmentVariable(\"action\", data['action_'+actionIteration].message);\r",
+									"postman.setEnvironmentVariable(\"value\", _.parseInt(data['action_'+actionIteration].value));\r",
+									"// This value will be use in the URL\r",
+									"postman.setEnvironmentVariable(\"actionIteration\", actionIteration);\r",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{url}}/listen",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token",
+									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_id",
+									"value": "T0001",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "team_domain",
+									"value": "example",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_id",
+									"value": "C2147483705",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "channel_name",
+									"value": "test",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "timestamp",
+									"value": "1355517523.000005",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "U2147483697",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "user_name",
+									"value": "Steve",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "text",
+									"value": "dogfight add distraction {{name}} \"{{action}}\" {{value}}",
 									"type": "text",
 									"enabled": true
 								},
@@ -1001,168 +1320,6 @@
 						"description": ""
 					},
 					"response": []
-				},
-				{
-					"name": "Listen (Start Fight)",
-					"request": {
-						"url": "http://{{url}}/listen",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "token",
-									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "team_id",
-									"value": "T0001",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "team_domain",
-									"value": "example",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "channel_id",
-									"value": "C2147483705",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "channel_name",
-									"value": "test",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "timestamp",
-									"value": "1355517523.000005",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "user_id",
-									"value": "U2147483697",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "user_name",
-									"value": "Steve",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "text",
-									"value": "dogfight fight Lola Duke",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "trigger_word",
-									"value": "googlebot",
-									"type": "text",
-									"enabled": true
-								}
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Listen (Add chicken suit for Kit)",
-					"request": {
-						"url": "http://{{url}}/listen",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "token",
-									"value": "b23DC6jji0bCyrQRBVaxlrsZ",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "team_id",
-									"value": "T0001",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "team_domain",
-									"value": "example",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "channel_id",
-									"value": "C2147483705",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "channel_name",
-									"value": "test",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "timestamp",
-									"value": "1355517523.000005",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "user_id",
-									"value": "U2147483697",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "user_name",
-									"value": "Steve",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "text",
-									"value": "dogfight add action Kit \"{0} puts on his chicken suit\" 10",
-									"type": "text",
-									"enabled": true
-								},
-								{
-									"key": "trigger_word",
-									"value": "dogfight",
-									"type": "text",
-									"enabled": true
-								}
-							]
-						},
-						"description": ""
-					},
-					"response": []
 				}
 			]
 		},
@@ -1182,6 +1339,28 @@
 					"mode": "raw",
 					"raw": "[\"Kit\", \"Bailey\"]"
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Bailey",
+			"request": {
+				"url": "http://{{url}}/dog/Bailey",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Bailey",
+			"request": {
+				"url": "http://{{url}}/dog/Bailey",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
 				"description": ""
 			},
 			"response": []
