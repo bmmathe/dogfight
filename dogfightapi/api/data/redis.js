@@ -4,6 +4,19 @@ var client = redis.createClient(6379, config.redis);
 var util = require('util');
 var outbound = require('../utils/outbound.js');
 
+client.on('reconnecting', function (data) {
+    console.log('reconnecting', JSON.stringify(data));    
+});
+
+client.on('error', function (err) {
+    console.log(util.format('Redis error: %s', err));
+});
+
+client.on('ready', function () {
+    console.log('Redis ready');
+});
+
+
 exports.saveDog = function(dog, callback) {
     client.set('dog:'+dog.name, JSON.stringify(dog), function(err, dog) {
         console.log(dog);
@@ -59,13 +72,14 @@ exports.queueFight = function(dogs, arenaId) {
 
 exports.listen = function() {
     var clientBlocking = client.duplicate();
-    var blpopQueue = function(id) {
-        clientBlocking.blpop(id, 0, function(err, data) {
+    var blpopQueue = function(id) {        
+        clientBlocking.blpop(id, 0, function(err, data) {            
             if(err) {
-                console.log("Error: " +err);
-                //return;
+                outbound.send(util.format('Redis blpop error: %s', err));
+                setTimeout(blpopQueue, 1000, id); // connect back to queue
+                return;
             }
-            var fight = JSON.parse(data[1]);
+            var fight = JSON.parse(data[1]);            
             module.exports.getDog(fight.dogs[0], function(err1, dog1) {
                 module.exports.getDog(fight.dogs[1], function(err2, dog2) {                    
                     startFight(dog1, dog2, fight.arenaId);
