@@ -12,7 +12,7 @@ function listen(req, res) {
     var command = commands[1];
 
     if(command == "commands") {
-        res.json({text: 'Proceed all commands with *dogfight*\nfight {dog1 name} {dog2 name}\ngetdog {name}\ngetdogs\n\add dog {name} {gender} {weight}\n```add dog Lola female 65```\nnadd attack {dog name} "[message]" value\n```add attack Lola "{0} bites {1} on the nose." -20```\nadd distraction {dog name} "[message]" value\n```add distraction Lola "{0} sees a squirrel." -10```\nadd action {dog name} "[message]" value\n```add action Lola "{0} growls at {1}." 15```\nremove dog {name}'});
+        res.json({text: 'Precede all commands with *dogfight*\n```fight Lola Duke\n```getdog Lola\n```getdogs```\nadd dog Lola female 65```\n```add attack Lola "{0} bites {1} on the nose." -20```\n```add distraction Lola "{0} sees a squirrel." -10```\n```add action Lola "{0} growls at {1}." 15```\n```remove dog Lola```'});
     } else if(command == "fight") {
         var dogs = [commands[2], commands[3]];
         fight.queueFight(dogs);
